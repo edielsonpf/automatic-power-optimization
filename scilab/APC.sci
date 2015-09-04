@@ -28,7 +28,7 @@
     //STD_DISTANCE=AVERAGE_DISTANCE*0.3;
     
     //10%, 30%, 60%, 80%
-    NODES_DENSITY=0.1;   
+    NODES_DENSITY=0.6;   
     //40,120,240,320
     NUM_NODES = round(AREA*NODES_DENSITY);
         
@@ -62,8 +62,10 @@
     write_csv(nodeLevel, 'InitialNodeLevel.csv');
     
    //ploting resulted graph
-   //plotGraph(nodeLocation,nodeLevel); //uncomment for debuging
-   
+   figure;
+   plotGraph(nodeLocation,nodeLevel,'b'); //uncomment for debuging
+   xlabel("Km");
+   ylabel("Km");  
    //Calculating the network average power
    //disp('The initial power sum:');
    AvgPower=NetPower(nodePower);
@@ -89,12 +91,17 @@
        //disp(nodeLevel);
        //=========================================
        //Calculating the path with lowest cost in the graph using prim algorithm
-       nodeLevel = -1.*nodeLevel;
-       max_level = -1*MIN_LEVEL;
-       min_level = -1*MAX_LEVEL;
-       [newGraph,mincost,vertices,maxGraph] = primOptimization(NUM_NODES,nodeLevel,max_level,min_level);
-       nodeLevel=-1.*newGraph;
-       min_nodeLevel = -1.*maxGraph;
+       //nodeLevel = -1.*nodeLevel;
+       //max_level = -1*MIN_LEVEL;
+       max_level = MAX_LEVEL;
+       //min_level = -1*MAX_LEVEL;
+       min_level = MIN_LEVEL;
+       //[newGraph,mincost,vertices,maxGraph] = primOptimization(NUM_NODES,nodeLevel,max_level,min_level);
+       [newGraph,mincost,vertices,maxGraph] = MaxST(NUM_NODES,nodeLevel,max_level,min_level);
+       //nodeLevel=-1.*newGraph;
+       nodeLevel=newGraph;
+       //min_nodeLevel = -1.*maxGraph;
+       min_nodeLevel = maxGraph;
        //disp(vertices);
        //disp("Nodes level relationship after prim algorithm:")
        //disp(nodeLevel);
@@ -117,6 +124,7 @@
    
    //ploting resulted graph
    //plotGraph2(nodeLocation,-1.*nodeLevel,MAX_LEVEL,'g');
+      
    nodeLevel = channelLoss(nodeLocation,nodePower,nodeFrequency,MIN_SENSIBILITY);
    disp('###End of optimization###');
    //disp('Total number of steps:');
@@ -142,8 +150,13 @@
    write_csv(nodeLevel,'NodeLevel.csv');
    
    //ploting resulted graph
-   plotGraph(nodeLocation,nodeLevel);
+   //plotGraph(nodeLocation,nodeLevel,'g');
    
+   figure;
+   plotGraph(nodeLocation,nodeLevel,'b');
+   
+   figure;
+   //plotGraph(nodeLocation,nodeLevel,'b');
    plotCircle(nodeLocation,nodePower,nodeFrequency,MIN_SENSIBILITY);
    
    //disp('Optimal power per radio:');
