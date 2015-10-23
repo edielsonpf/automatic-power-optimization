@@ -2,7 +2,8 @@ function [newGraph,mincost,vertices,maxGraph] = primOptimization(n,cost,maxLevel
     
     [row,col]=size(cost);
     newGraph=zeros(row,col);
-    maxGraph=ones(n,1).*minLevel;
+    //maxGraph=ones(n,1).*minLevel;
+    maxGraph=ones(n,1).*maxLevel;
 	for j=1:n
       for i=1:n
 //           if (cost(i,j)==0) then
@@ -21,31 +22,32 @@ function [newGraph,mincost,vertices,maxGraph] = primOptimization(n,cost,maxLevel
     visited(1)=1;
  
     while(ne < n)
-		minimum=maxLevel;
+		//minimum=maxLevel;
+        minimum=minLevel;
         for i=1:n
             for j=1:n
-                if(cost(i,j) < minimum)
+                if((cost(i,j) > minimum) & (cost(i,j) < maxLevel))
                     if(visited(i)~=0)
-                        //if(cost(j,i) < maxLevel)
+//                        if(cost(i,j) < maxLevel)
                             minimum=cost(i,j);
                             u=i;
                             a=u
                             v=j;
                             b=v;
-                        //end
+  //                      end
                     end
                 end
             end
         end
         if((visited(u)==0) | (visited(v)==0))
-            //disp('Edge:');
-            //disp(ne);
-            //disp(a);
-            //disp(b);
+            disp('Edge:');
+            disp(ne);
+            disp(u);
+            disp(v);
             vertices(ne,1)=a;
             vertices(ne,2)=b;
-            //disp('cost:');
-            //disp(minimum);
+            disp('cost:');
+            disp(minimum);
             ne=ne+1;    
             mincost=mincost+minimum;
             visited(b)=1;
