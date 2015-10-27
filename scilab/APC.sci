@@ -28,7 +28,7 @@
     //STD_DISTANCE=AVERAGE_DISTANCE*0.3;
     
     //10%, 30%, 60%, 80%
-    NODES_DENSITY=0.6;   
+    NODES_DENSITY=0.8;   
     //40,120,240,320
     NUM_NODES = round(AREA*NODES_DENSITY);
         
