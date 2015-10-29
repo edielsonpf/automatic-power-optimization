@@ -1,6 +1,6 @@
 param N := 5;
 param NLINKS := 20; #N*(N-1);
-param MSTART :=2;
+param MSTART :=0;
 
 param: LINKS : capacity_P =
 		[1,2]		1    	
@@ -26,6 +26,8 @@ param: LINKS : capacity_P =
 		
 param gamma := 
 
+		0	0
+		1	1
 		2	1
 		3	1
 		4	2

@@ -4,14 +4,22 @@ option ampl_include 'C:\Users\Edielson\Documents\Researches\automatic-power-opti
 option solver cplex;
 
 model BackupModel.mod;
-data BackupDataN4.dat;
 
-option log_file 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl\BackupLogN4.log';
+#data BackupDataN3.dat;
+#data BackupDataN4.dat;
+data BackupDataN5.dat;
+
+#option log_file 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl\BackupLogN3.log';
+#option log_file 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl\BackupLogN4.log';
+option log_file 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl\BackupLogN5.log';
 
 
 let K := (max{(s,d) in LINKS} capacity_P[s,d])+1;
 
+option solver cplex;
 option cplex_options 'mipgap=0.01 mipdisplay=3';
+
+#option solver gurobi;
 
 solve;
 display CB;

@@ -1,6 +1,6 @@
 param N := 3;
 param NLINKS := 6; #N*(N-1);
-param MSTART :=0;
+param MSTART := 0;
 
 param: LINKS : capacity_P =
 		[1,2]		1    	
