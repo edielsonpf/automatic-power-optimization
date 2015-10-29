@@ -17,6 +17,7 @@ param gamma {M} >= 0;         				# minimum capacity resulted for m links consid
 
 param capacity_P {LINKS} >= 0;         		# capacity of each link at primary network  
 
+param cost {LINKS} >= 0;
 #########################################################
 # 				VARIABLES DEFINITION					#
 #########################################################
@@ -24,6 +25,8 @@ param capacity_P {LINKS} >= 0;         		# capacity of each link at primary netw
 var CB{(i,j) in LINKS} >= 0;	#capacity per backup link
 
 var B{NODES,NODES,NODES,NODES} binary; #binary variable to define if backup link is active or not
+
+var BP{NODES,NODES} >= 0; #used to identify wich links were set to work as backup
 
 var THETA{NODES,NODES,NODES,NODES} >=0; #used for linearization
 var V{(i,j) in LINKS} >=0 ;	#used for linearization
@@ -35,9 +38,12 @@ var Y{NODES,NODES,M} >=0; #used for linearization
 # The objective is to minimize the backup capcity		#
 #########################################################
 
-minimize BackupCapacity: sum{(i,j) in LINKS} CB[i,j];
+minimize BackupCapacity: sum{(i,j) in LINKS} CB[i,j] + sum{(i,j) in LINKS} cost[i,j]*BP[i,j];
+#minimize BackupCapacity: sum{(i,j) in LINKS} CB[i,j];
 
 #subject to
+
+subject to ValidLink {(i,j) in LINKS, (s,d) in LINKS}: BP[i,j] >= B[i,j,s,d];
 
 subject to Capacity {(i,j) in LINKS}: CB[i,j] >= sum{m in M} Y[i,j,m]*gamma[m] + sum{(s,d) in LINKS} THETA[i,j,s,d];
 
