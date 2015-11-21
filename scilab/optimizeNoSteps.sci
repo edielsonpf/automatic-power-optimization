@@ -1,6 +1,6 @@
 function optimalPowerNet = optimizeNoSteps(powerNet,relationNet,min_relationNet,min_sensibility,min_power_level)
 
-    USE_HASH = 0;    
+    USE_HASH = 1;    
     MIN_LEVEL = -1000000;
     //OPTIMAL_RATE = 10;
     OPTIMAL_RATE = 1;
