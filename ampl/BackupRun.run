@@ -13,8 +13,7 @@ option log_file 'C:\Users\Edielson\Documents\Researches\automatic-power-optimiza
 #option log_file 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl\BackupLogN4.log';
 #option log_file 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl\BackupLogN5.log';
 
-
-let K := (max{(s,d) in LINKS} capacity_P[s,d])+1;
+let K := max({(s,d) in LINKS} capacity_P[s,d])+1;
 
 option solver cplex;
 option cplex_options 'mipgap=0.01 mipdisplay=3';

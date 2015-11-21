@@ -19,7 +19,7 @@
         
     //10, 15, 20
     // max and min distances in km
-    MAX_DISTANCE = 10;
+    MAX_DISTANCE = 20;
     MIN_DISTANCE = 1;
     AREA=MAX_DISTANCE^2;
     

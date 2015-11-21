@@ -38,8 +38,8 @@ var Y{NODES,NODES,M} >=0; #used for linearization
 # The objective is to minimize the backup capcity		#
 #########################################################
 
-minimize BackupCapacity: sum{(i,j) in LINKS} CB[i,j] + sum{(i,j) in LINKS} cost[i,j]*BP[i,j];
-#minimize BackupCapacity: sum{(i,j) in LINKS} CB[i,j];
+#minimize BackupCapacity: sum{(i,j) in LINKS} CB[i,j] + sum{(i,j) in LINKS} cost[i,j]*BP[i,j];
+minimize BackupCapacity: sum{(i,j) in LINKS} CB[i,j];
 
 #subject to
 
