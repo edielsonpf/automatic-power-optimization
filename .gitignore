@@ -2,3 +2,10 @@
 *.scg
 scilab/Graphic window number 0.bmp
 *.bmp
+python/WsnOptimization/.metadata/.log
+*.log
+python/WsnOptimization/.metadata/version.ini
+python/WsnOptimization/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+*.tree
+python/WsnOptimization/.metadata/version.ini
+*.xmi
