@@ -9,3 +9,4 @@ python/WsnOptimization/.metadata/.plugins/org.eclipse.core.resources/.safetable/
 *.tree
 python/WsnOptimization/.metadata/version.ini
 *.xmi
+*.pyc
