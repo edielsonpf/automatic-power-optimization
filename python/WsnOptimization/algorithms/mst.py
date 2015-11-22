@@ -38,7 +38,9 @@ class MST(object):
         for v in range(len(self.__graph)):
             if v > 0:
                 print(str(self.__parent[v]) + ' - ' + str(v) + '    ' + str(self.__graph[v][self.__parent[v]]))
-
+                
+        print('\n')
+        
     def __minKey(self):
        
         minKey = self.__infinity
