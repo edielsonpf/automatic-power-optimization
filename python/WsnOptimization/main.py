@@ -4,17 +4,15 @@ Created on Nov 20, 2015
 @author: Edielson
 '''
 from algorithms.mst import MST
-from wsn.network import WSN
+from network.wsn import WSN
 import math, logging
+from gurobipy import *
+from optimizer.flow import Flow
+from optimizer.backup import Backup
+
 
 if __name__ == '__main__':
     pass
-
-# # Method for calculating maximum distance according to the power transmission 
-# def caldDistance(power,frequency,level):
-#     loss = 32.5 + 20*math.log10(frequency)
-#     distance = 10**((maxPower - loss - level)/20)
-#     return distance
 
 # Constant definition
 logLevel = logging.DEBUG
@@ -28,10 +26,6 @@ area = 50  #square kilometers
 
 # Defining a transmission power vector with maximum power level for all nodes
 powerVector = [[maxPower for x in range(numNodes)] for x in range(numNodes)]
-
-#calculating maximum distance for maximum power level
-# dmax = caldDistance(maxPower, frequency, minLevel)
-# print('Maximum distance: ' + str(dmax) + '\n') 
 
 # Creating scenario  
 Network = WSN(powerVector,numNodes,frequency,threshold,area,minPower,logLevel)
@@ -64,4 +58,97 @@ print('Optimizing the new graph after MST...\n')
 powerVector = Network.optimize(myNewGraph)
 newTotal = sum(powerVector)
 print('Total power: '+ str(newTotal)+'\n')
-print('Reduction: ' + str((1-(newTotal/total))*100)+'%')
+print('Reduction: ' + str((1-(newTotal/total))*100)+'%\n')
+
+
+
+#creating data for Flow model 
+commodities = ['Pencils', 'Pens']
+nodes = ['Detroit', 'Denver', 'Boston', 'New York', 'Seattle']
+
+arcs, capacity = multidict({
+  ('Detroit', 'Boston'):   100,
+  ('Detroit', 'New York'):  80,
+  ('Detroit', 'Seattle'):  120,
+  ('Denver',  'Boston'):   120,
+  ('Denver',  'New York'): 120,
+  ('Denver',  'Seattle'):  120 })
+arcs = tuplelist(arcs)
+
+cost = {
+  ('Pencils', 'Detroit', 'Boston'):   10,
+  ('Pencils', 'Detroit', 'New York'): 20,
+  ('Pencils', 'Detroit', 'Seattle'):  60,
+  ('Pencils', 'Denver',  'Boston'):   40,
+  ('Pencils', 'Denver',  'New York'): 40,
+  ('Pencils', 'Denver',  'Seattle'):  30,
+  ('Pens',    'Detroit', 'Boston'):   20,
+  ('Pens',    'Detroit', 'New York'): 20,
+  ('Pens',    'Detroit', 'Seattle'):  80,
+  ('Pens',    'Denver',  'Boston'):   60,
+  ('Pens',    'Denver',  'New York'): 70,
+  ('Pens',    'Denver',  'Seattle'):  30 }
+
+inflow = {
+  ('Pencils', 'Detroit'):   50,
+  ('Pencils', 'Denver'):    60,
+  ('Pencils', 'Boston'):   -50,
+  ('Pencils', 'New York'): -50,
+  ('Pencils', 'Seattle'):  -10,
+  ('Pens',    'Detroit'):   60,
+  ('Pens',    'Denver'):    40,
+  ('Pens',    'Boston'):   -40,
+  ('Pens',    'New York'): -30,
+  ('Pens',    'Seattle'):  -30 }
+
+myFlow = Flow(commodities,nodes,arcs,capacity,cost,inflow)
+myFlow.optimize()
+
+##################################################
+#creating data for Flow model 
+
+nodes = [1, 2, 3, 4, 5]
+
+links, capacity = multidict({
+  (1, 2):   1,
+  (1, 3):   1,
+  (1, 4):   1,
+  (1, 5):   1,
+  (2, 1):   1,
+  (2, 3):   1,
+  (2, 4):   1,
+  (2, 5):   1,
+  (3, 1):   1,
+  (3, 2):   1,
+  (3, 4):   1,
+  (3, 5):   1,
+  (4, 1):   1,
+  (4, 2):   1,
+  (4, 3):   1,
+  (4, 5):   1,
+  (5, 1):   1,
+  (5, 2):   1,
+  (5, 3):   1,
+  (5, 4):   1})
+
+links = tuplelist(links)
+
+# cost = {
+#   ('Pencils', 'Detroit', 'Boston'):   10,
+#   ('Pencils', 'Detroit', 'New York'): 20,
+#   ('Pencils', 'Detroit', 'Seattle'):  60,
+#   ('Pencils', 'Denver',  'Boston'):   40,
+#   ('Pencils', 'Denver',  'New York'): 40,
+#   ('Pencils', 'Denver',  'Seattle'):  30,
+#   ('Pens',    'Detroit', 'Boston'):   20,
+#   ('Pens',    'Detroit', 'New York'): 20,
+#   ('Pens',    'Detroit', 'Seattle'):  80,
+#   ('Pens',    'Denver',  'Boston'):   60,
+#   ('Pens',    'Denver',  'New York'): 70,
+#   ('Pens',    'Denver',  'Seattle'):  30 }
+
+
+myBackup = Backup(nodes,links,capacity,cost)
+myBackup.optimize()
+
+
