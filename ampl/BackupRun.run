@@ -13,10 +13,10 @@ let {(s,d) in LINKS} mean[s,d] := p;
 let {(s,d) in LINKS} variance[s,d] := p*(1-p);
 
 
-option solver cplex;
-option cplex_options 'mipgap=0.01 mipdisplay=3';
+#option solver cplex;
+#option cplex_options 'mipgap=0.01 mipdisplay=3';
 
-#option solver gurobi;
+option solver gurobi;
 
 solve;
 display CB;

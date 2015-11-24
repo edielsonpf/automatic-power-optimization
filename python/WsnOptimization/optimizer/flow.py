@@ -49,6 +49,8 @@ class Flow(object):
         
     def optimize(self):
         
+        self.__model.write('flow.lp')
+        
         # Compute optimal solution
         self.__model.optimize()
  

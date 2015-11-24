@@ -61,51 +61,8 @@ print('Total power: '+ str(newTotal)+'\n')
 print('Reduction: ' + str((1-(newTotal/total))*100)+'%\n')
 
 
-
-#creating data for Flow model 
-commodities = ['Pencils', 'Pens']
-nodes = ['Detroit', 'Denver', 'Boston', 'New York', 'Seattle']
-
-arcs, capacity = multidict({
-  ('Detroit', 'Boston'):   100,
-  ('Detroit', 'New York'):  80,
-  ('Detroit', 'Seattle'):  120,
-  ('Denver',  'Boston'):   120,
-  ('Denver',  'New York'): 120,
-  ('Denver',  'Seattle'):  120 })
-arcs = tuplelist(arcs)
-
-cost = {
-  ('Pencils', 'Detroit', 'Boston'):   10,
-  ('Pencils', 'Detroit', 'New York'): 20,
-  ('Pencils', 'Detroit', 'Seattle'):  60,
-  ('Pencils', 'Denver',  'Boston'):   40,
-  ('Pencils', 'Denver',  'New York'): 40,
-  ('Pencils', 'Denver',  'Seattle'):  30,
-  ('Pens',    'Detroit', 'Boston'):   20,
-  ('Pens',    'Detroit', 'New York'): 20,
-  ('Pens',    'Detroit', 'Seattle'):  80,
-  ('Pens',    'Denver',  'Boston'):   60,
-  ('Pens',    'Denver',  'New York'): 70,
-  ('Pens',    'Denver',  'Seattle'):  30 }
-
-inflow = {
-  ('Pencils', 'Detroit'):   50,
-  ('Pencils', 'Denver'):    60,
-  ('Pencils', 'Boston'):   -50,
-  ('Pencils', 'New York'): -50,
-  ('Pencils', 'Seattle'):  -10,
-  ('Pens',    'Detroit'):   60,
-  ('Pens',    'Denver'):    40,
-  ('Pens',    'Boston'):   -40,
-  ('Pens',    'New York'): -30,
-  ('Pens',    'Seattle'):  -30 }
-
-myFlow = Flow(commodities,nodes,arcs,capacity,cost,inflow)
-myFlow.optimize()
-
 ##################################################
-#creating data for Flow model 
+#creating data for backup model 
 
 nodes = [1, 2, 3, 4, 5]
 
@@ -133,22 +90,79 @@ links, capacity = multidict({
 
 links = tuplelist(links)
 
-# cost = {
-#   ('Pencils', 'Detroit', 'Boston'):   10,
-#   ('Pencils', 'Detroit', 'New York'): 20,
-#   ('Pencils', 'Detroit', 'Seattle'):  60,
-#   ('Pencils', 'Denver',  'Boston'):   40,
-#   ('Pencils', 'Denver',  'New York'): 40,
-#   ('Pencils', 'Denver',  'Seattle'):  30,
-#   ('Pens',    'Detroit', 'Boston'):   20,
-#   ('Pens',    'Detroit', 'New York'): 20,
-#   ('Pens',    'Detroit', 'Seattle'):  80,
-#   ('Pens',    'Denver',  'Boston'):   60,
-#   ('Pens',    'Denver',  'New York'): 70,
-#   ('Pens',    'Denver',  'Seattle'):  30 }
+cost = {
+  (1, 2):   1,
+  (1, 3):   1,
+  (1, 4):   1,
+  (1, 5):   1,
+  (2, 1):   1,
+  (2, 3):   1,
+  (2, 4):   1,
+  (2, 5):   1,
+  (3, 1):   1,
+  (3, 2):   1,
+  (3, 4):   1,
+  (3, 5):   1,
+  (4, 1):   1,
+  (4, 2):   1,
+  (4, 3):   1,
+  (4, 5):   1,
+  (5, 1):   1,
+  (5, 2):   1,
+  (5, 3):   1,
+  (5, 4):   1}
 
 
-myBackup = Backup(nodes,links,capacity,cost)
+p = 0.025
+invstd = 2.326347874
+me = p
+var = p*(1-p)
+  
+mean = {
+  (1, 2):   me,
+  (1, 3):   me,
+  (1, 4):   me,
+  (1, 5):   me,
+  (2, 1):   me,
+  (2, 3):   me,
+  (2, 4):   me,
+  (2, 5):   me,
+  (3, 1):   me,
+  (3, 2):   me,
+  (3, 4):   me,
+  (3, 5):   me,
+  (4, 1):   me,
+  (4, 2):   me,
+  (4, 3):   me,
+  (4, 5):   me,
+  (5, 1):   me,
+  (5, 2):   me,
+  (5, 3):   me,
+  (5, 4):   me}
+
+variance = {
+  (1, 2):   var,
+  (1, 3):   var,
+  (1, 4):   var,
+  (1, 5):   var,
+  (2, 1):   var,
+  (2, 3):   var,
+  (2, 4):   var,
+  (2, 5):   var,
+  (3, 1):   var,
+  (3, 2):   var,
+  (3, 4):   var,
+  (3, 5):   var,
+  (4, 1):   var,
+  (4, 2):   var,
+  (4, 3):   var,
+  (4, 5):   var,
+  (5, 1):   var,
+  (5, 2):   var,
+  (5, 3):   var,
+  (5, 4):   var}
+        
+myBackup = Backup(nodes,links,capacity,cost,mean,variance,invstd)
 myBackup.optimize()
 
 

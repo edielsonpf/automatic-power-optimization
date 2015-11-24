@@ -27,7 +27,7 @@ param invstd >=0;
 # 				VARIABLES DEFINITION					#
 #########################################################
 
-var CB{(i,j) in LINKS} >=0 integer;	#capacity per backup link
+var CB{(i,j) in LINKS} >=0;	#capacity per backup link
 
 var BP{NODES,NODES} >= 0; #used to identify wich links were set to work as backup
 
@@ -46,8 +46,8 @@ minimize BackupCapacity: sum{(i,j) in LINKS} CB[i,j] + sum{(i,j) in LINKS} BP[i,
 #subject to
 subject to Capacity {(i,j) in LINKS}: CB[i,j] >= sum{(s,d) in LINKS}mean[s,d]*B[i,j,s,d]+U[i,j]*invstd;
 
-subject to Refomulation{(i,j) in LINKS}: R[i,j]^2 <= U[i,j]^2;
-subject to Refomulation2{(i,j) in LINKS}: sum{(s,d) in LINKS}B[i,j,s,d]*variance[s,d] = R[i,j];
+subject to Reformulation{(i,j) in LINKS}: R[i,j]^2 <= U[i,j]^2;
+subject to Reformulation2{(i,j) in LINKS}: sum{(s,d) in LINKS}B[i,j,s,d]*variance[s,d] = R[i,j];
 
 subject to ValidLink {(i,j) in LINKS, (s,d) in LINKS}: BP[i,j] >= B[i,j,s,d];
 
