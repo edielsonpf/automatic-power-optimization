@@ -1,19 +1,17 @@
 reset;
 option ampl_include 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl';
 
-option solver cplex;
-
 model BackupModel.mod;
 
-data BackupDataN3.dat;
-#data BackupDataN4.dat;
-#data BackupDataN5.dat;
+data BackupData.dat;
 
-option log_file 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl\BackupLogN3.log';
-#option log_file 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl\BackupLogN4.log';
-#option log_file 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl\BackupLogN5.log';
+option log_file 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl\BackupLog.log';
 
-let K := max({(s,d) in LINKS} capacity_P[s,d])+1;
+let nlinks := n*(n-1);
+
+let {(s,d) in LINKS} mean[s,d] := p;
+let {(s,d) in LINKS} variance[s,d] := p*(1-p);
+
 
 option solver cplex;
 option cplex_options 'mipgap=0.01 mipdisplay=3';
