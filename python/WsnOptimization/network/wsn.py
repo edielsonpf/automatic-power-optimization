@@ -58,7 +58,7 @@ class WSN(object):
             for j in range(self.__numNodes):
                 if i != j:
                     dist = math.sqrt(((self.__nodes[0][i]-self.__nodes[0][j])**2)+((self.__nodes[1][i]-self.__nodes[1][j])**2))
-                    if dist < self.__caldDistance(self.__power[0][i]):
+                    if dist < self.__caldDistance(self.__power[i]):
                         ValidConnection = True
                         graph[i][j] = dist 
         

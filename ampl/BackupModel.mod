@@ -46,6 +46,8 @@ minimize BackupCapacity: sum{(i,j) in LINKS} CB[i,j] + sum{(i,j) in LINKS} BP[i,
 #subject to
 subject to Capacity {(i,j) in LINKS}: CB[i,j] >= sum{(s,d) in LINKS}mean[s,d]*B[i,j,s,d]+U[i,j]*invstd;
 
+#subject to Backup{(i,j) in LINKS}: sum{(s,d) in LINKS}B[i,j,s,d] = sum{(s,d) in LINKS}B[j,i,s,d];
+
 subject to Reformulation{(i,j) in LINKS}: R[i,j]^2 <= U[i,j]^2;
 subject to Reformulation2{(i,j) in LINKS}: sum{(s,d) in LINKS}B[i,j,s,d]*variance[s,d] = R[i,j];
 

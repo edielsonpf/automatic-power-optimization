@@ -31,7 +31,10 @@ invstd = 2.326347874
 
 
 # Defining a transmission power vector with maximum power level for all nodes
-powerVector = [[maxPower for x in range(numNodes)] for x in range(numNodes)]
+
+powerVector = [maxPower for x in range(numNodes)]
+total = sum(powerVector)
+print('Initial total power: ' + str(total)+'\n')
 
 # Creating scenario  
 Network = WSN(powerVector,numNodes,frequency,threshold,area,minPower,logLevel)
@@ -51,12 +54,13 @@ Scenario = Network.getScenario()
 # 
 # # or plot with: 
 # plot_url = py.plot(data, filename='basic-line')
-
+print('Optimizing power direct...\n')
 powerVector = Network.optimize(Graph)
-total = sum(powerVector)
-print('Total power: ' + str(total)+'\n')
-
+totalI = sum(powerVector)
+print('Total power [Phase I]: ' + str(totalI))
+print('Reduction [Phase I]: ' + str((1-(totalI/total))*100)+'%\n')
 #===============================================================================
+print('Optimizing power with backup links...\n')
 
 links = Network.getLinks(Graph)
 links = tuplelist(links)
@@ -191,7 +195,7 @@ for i,j in links:
 myBackup = Backup(nodes,links,capacity,cost,mean,variance,invstd)
 solution = myBackup.optimize()
 
-print(Graph)
+#print(Graph)
 NewGraph = [[unconnected for i in range(numNodes)] for i in range(numNodes)]
 # for i in range(len(Graph)):
 #     for j in range(len(Graph)):
@@ -204,9 +208,15 @@ for i,j in links:
         #NewGraph[i][j]=Graph[i][j]+10
         #NewGraph[j][i]=Graph[j][i]+10
         NewGraph[i][j]=Graph[i][j]
-        NewGraph[j][i]=Graph[j][i]
-print(NewGraph)
+        #NewGraph[j][i]=Graph[j][i]
+#print(NewGraph)
+
+powerVector = Network.optimize(NewGraph)
+TotalII = sum(powerVector)
+print('Total power [Phase II]: '+ str(TotalII))
+print('Reduction [Phase II]: ' + str((1-(TotalII/total))*100)+'%\n')
 #====================================================================
+print('Optimizing the new graph after MST...\n')
 #Graph = [[unconnected, 2, unconnected, 6, unconnected], [2, unconnected, 3, 8, 5], [unconnected, 3, unconnected, unconnected, 7],[6, 8, unconnected, unconnected, 9], [unconnected, 5, 7, 9, unconnected]]
 #Graph = [[100000, 1.6886794115948998, 2.3122223520756173, 5.296711537472404, 3.5272263704139903], [1.6886794115948998, 100000, 2.91118563715952, 4.489562628012171, 3.2441779819626384], [2.3122223520756173, 2.91118563715952, 100000, 3.789229517634896, 100000], [5.296711537472404, 4.489562628012171, 3.789229517634896, 100000, 100000], [3.5272263704139903, 3.2441779819626384, 100000, 100000, 100000]]
 #Graph = [[100000, 2.776731497489389, 5.5709380662188925, 100000, 3.3655359288501994], [2.776731497489389, 100000, 3.2242450750420453, 100000, 4.131843423863429], [5.5709380662188925, 3.2242450750420453, 100000, 100000, 100000], [100000, 100000, 100000, 100000, 100000], [3.3655359288501994, 4.131843423863429, 100000, 100000, 100000]]
@@ -226,12 +236,11 @@ for i in range(len(MSTGraph1)):
             MSTGraph1[j][i] = Graph[j][i]
 
 
-print('Optimizing the new graph after MST...\n')
-print (str(MSTGraph1))
+#print (str(MSTGraph1))
 powerVector = Network.optimize(MSTGraph1)
-newTotal = sum(powerVector)
-print('Total power: '+ str(newTotal)+'\n')
-print('Reduction: ' + str((1-(newTotal/total))*100)+'%\n')
+TotalIII = sum(powerVector)
+print('Total power: '+ str(TotalIII))
+print('Reduction: ' + str((1-(TotalIII/total))*100)+'%\n')
 
 ############################################################
 
@@ -256,11 +265,3 @@ print('Reduction: ' + str((1-(newTotal/total))*100)+'%\n')
 #         MSTGraph2[j][i]=NewGraph[j][i]-10
 
 
-print('Optimizing the new graph with backup links after MST...\n')
-#print(MSTGraph2)
-#powerVector = Network.optimize(MSTGraph2)
-print(NewGraph)
-powerVector = Network.optimize(NewGraph)
-newTotal = sum(powerVector)
-print('Total power: '+ str(newTotal)+'\n')
-print('Reduction: ' + str((1-(newTotal/total))*100)+'%\n')
