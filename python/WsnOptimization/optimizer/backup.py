@@ -92,8 +92,13 @@ class Backup(object):
         #subject to ValidLink {(i,j) in LINKS, (s,d) in LINKS}: BP[i,j] >= B[i,j,s,d];
         for i,j in self.__links:
             for s,d in self.__links:
-                self.__model.addConstr(self.__ValidLink[i,j] >= self.__bBackupLink[i,j,s,d],'[CONST]Valid_Link_%s_%s' % (i, j))
+                self.__model.addConstr(self.__ValidLink[i,j] >= self.__bBackupLink[i,j,s,d],'[CONST]Valid_Link[%s,%s,%s,%s]' % (i,j,s,d))
         self.__model.update()
+        
+        # SCOP Reformulation Constraints
+#         for i,j in self.__links:
+#             self.__model.addConstr(quicksum(self.__bBackupLink[i,j,s,d] for (s,d) in self.__links) == quicksum(self.__bBackupLink[j,i,s,d] for (s,d) in self.__links) ,'[CONST]Backup_[%s,%s]' % (i, j))
+#         self.__model.update()
         
         # SCOP Reformulation Constraints
         for i,j in self.__links:

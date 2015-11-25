@@ -48,6 +48,7 @@ class WSN(object):
         
         # generate random positions (x,y) for each node
         self.__nodes=[[random.uniform(0, math.sqrt(self.__area)) for i in range(self.__numNodes)] for i in range(2)]
+       
         # generated a graph with connection between nodes initially unconnected
         graph = [[self.__unconnected for i in range(self.__numNodes)] for i in range(self.__numNodes)]
         
@@ -82,5 +83,14 @@ class WSN(object):
             self.__power[i] = self.__threshold+self.__calcLoss(highDistance);
             if self.__power[i] < self.__minTxLevel:
                 self.__power[i] = self.__minTxLevel
-                
+        
         return self.__power
+    
+    def getLinks(self,graph):
+        
+        links = []
+        for i in range(len(graph)):
+            for j in range(len(graph)):
+                if graph[i][j] < self.__unconnected:
+                    links.append((i,j))
+        return links
