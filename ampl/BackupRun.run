@@ -7,6 +7,8 @@ data BackupData.dat;
 
 option log_file 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl\BackupLog.log';
 
+let p := 0.025;
+
 let nlinks := n*(n-1);
 
 let {(s,d) in LINKS} mean[s,d] := p;
@@ -20,6 +22,10 @@ option solver gurobi;
 
 solve;
 display CB;
+display sum{(i,j) in LINKS}CB[i,j];
+display (sum{(i,j) in LINKS}CB[i,j])/n;
+display 1/sqrt(n);
+display 1/sqrt(n*log(n));
 #display B;
 
 option log_file '';
