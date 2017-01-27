@@ -34,7 +34,6 @@ class WSN(object):
         self.__nodes = nodes    
         self.__mst = MST(log)
         self.__generateGraph()
-#         plt.ion() # enables interactive mode
         
     def __configLog(self,log):
         # print a log message to the console.
@@ -49,8 +48,11 @@ class WSN(object):
     # Method for calculating maximum distance according to the power transmission 
     def __calcLoss(self,distance):
         return (32.5 + 20*math.log10(self.__frequency) + 20*math.log10(distance))
+    
+    def __calcEuclidianDist(self,node_a,node_b):
+        return (math.sqrt(((node_a[0]-node_b[0])**2)+((node_a[1]-node_b[1])**2)))
         
-    def __generateGraph(self):
+    def __generateGraph2(self):
         
         # transforms the indirect graph in directed one
         self.__nxGraph = nx.Graph()
@@ -73,7 +75,30 @@ class WSN(object):
             logging.warning('The graph is not connected!')
             self.__graph = []
             self.__nxGraph=[]
-
+            
+    def __generateGraph(self):
+        
+        # transforms the indirect graph in directed one
+        self.__nxGraph = nx.Graph()
+        
+        # generated a graph with connection between nodes initially unconnected
+        self.__graph = [[self.__unconnected for i in range(self.__numNodes)] for j in range(self.__numNodes)]
+        
+        ValidConnection = False
+        
+        for node_a in self.__nodes:
+            for node_b in self.__nodes:
+                if node_a != node_b:
+                    dist = self.__calcEuclidianDist(node_a,node_b)
+                    if dist < self.__caldDistance(self.__power[self.__nodes.index(node_a)]):
+                        ValidConnection = True
+                        self.__graph[self.__nodes.index(node_a)][self.__nodes.index(node_b)] = dist
+                        self.__nxGraph.add_edge(self.__nodes.index(node_a), self.__nodes.index(node_b)) 
+        
+        if ValidConnection == False:
+            logging.warning('The graph is not connected!')
+            self.__graph = []
+            self.__nxGraph=[]
     def getScenario(self):
         return self.__nodes
     
@@ -116,40 +141,36 @@ class WSN(object):
         return links
 
     
-    def plotGraph(self,position=None):
-        """Plot a graph G with specific position.
+    def plotGraph(self,positions=None):
+        """Plot a graph G with specific positions.
     
         Parameters
         ----------
-        position : nodes position 
+        positions : nodes positions 
         
         Returns
         -------
         
         """
         
-        if position == None:
-            position=self.__nodes # positions for all nodes
-            
+        if positions == None:
             #in this case it is necessary o convert the matrix node to dictionary    
             pos=0
-            dict_position={}
-            for i in range(self.__numNodes):
-                dict_position[pos]=np.array([position[0][i],position[1][i]])
+            positions={}
+            for node in self.__nodes:
+                positions[pos]=np.array([node[0],node[1]])
                 pos+=1
             
-            position = dict_position        
-        
         # nodes
-        nx.draw_networkx_nodes(self.__nxGraph,position,node_size=100)
+        nx.draw_networkx_nodes(self.__nxGraph,positions,node_size=100)
             
         # edges
-#         nx.draw_networkx_edges(self.__nxGraph,position,edgelist=elarge,width=2)
-#         nx.draw_networkx_edges(self.__nxGraph,position,edgelist=esmall,width=2,alpha=0.5,edge_color='b',style='dashed')
-        nx.draw_networkx_edges(self.__nxGraph,position,width=2)
+#         nx.draw_networkx_edges(self.__nxGraph,positions,edgelist=elarge,width=2)
+#         nx.draw_networkx_edges(self.__nxGraph,positions,edgelist=esmall,width=2,alpha=0.5,edge_color='b',style='dashed')
+        nx.draw_networkx_edges(self.__nxGraph,positions,width=2)
         
         # labels
-        nx.draw_networkx_labels(self.__nxGraph,position,font_size=20,font_family='sans-serif')
+        nx.draw_networkx_labels(self.__nxGraph,positions,font_size=20,font_family='sans-serif')
         
         plt.axis('off')
         #plt.savefig("weighted_graph.png") # save as png

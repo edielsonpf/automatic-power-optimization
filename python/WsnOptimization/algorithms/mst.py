@@ -27,7 +27,7 @@ class MST(object):
         logging.basicConfig(format='%(asctime)s %(message)s', level=logLevel)
         
     def printMST(self):
-        print('Edge   Cost\n')
+        print('Edge     Cost\n')
         for v in range(len(self.__mstGraph)):
             if v > 0:
                 print(str(self.__parent[v]) + ' - ' + str(v) + '    ' + str(self.__mstGraph[v][self.__parent[v]]))
