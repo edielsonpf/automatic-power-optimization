@@ -31,7 +31,7 @@ class Backup(object):
         '''
         Constructor
         '''
-        self.__links = links
+        self.__links = tuplelist(links)
         self.__cost = cost
         self.__nodes = nodes
         self.__capacity = capacity
