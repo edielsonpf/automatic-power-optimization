@@ -29,14 +29,14 @@ function [newGraph,maxcost,vertices,maxGraph] = MaxST(n,cost,maxLevel, minLevel)
             end
         end
         if((visited(u)==0) | (visited(v)==0))
-            disp('Edge:');
-            disp(ne);
-            disp(a);
-            disp(b);
+            //disp('Edge:');
+            //disp(ne);
+            //disp(a);
+            //disp(b);
             vertices(ne,1)=a;
             vertices(ne,2)=b;
-            disp('cost:');
-            disp(maximum);
+            //disp('cost:');
+            //disp(maximum);
             ne=ne+1;    
             maxcost=maxcost+maximum;
             visited(b)=1;

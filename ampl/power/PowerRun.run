@@ -1,0 +1,21 @@
+reset;
+option ampl_include 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl\power';
+
+model PowerModel.mod;
+
+data PowerData.dat;
+
+option log_file 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl\power\PowerLog.log';
+
+let nlinks := n*(n-1);
+
+#option solver minos;
+option solver gurobi;
+#option solver cplex;
+#option cplex_options 'mipgap=0.001 mipdisplay=3';
+
+solve;
+display P;
+display DIST;
+
+option log_file '';

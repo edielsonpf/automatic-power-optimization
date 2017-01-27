@@ -1,20 +1,31 @@
 reset;
 option ampl_include 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl';
 
-option solver cplex;
-
 model BackupModel.mod;
-data BackupDataN4.dat;
 
-option log_file 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl\BackupLogN4.log';
+data BackupData.dat;
+
+option log_file 'C:\Users\Edielson\Documents\Researches\automatic-power-optimization\ampl\BackupLog.log';
+
+let p := 0.025;
+
+let nlinks := n*(n-1);
+
+let {(s,d) in LINKS} mean[s,d] := p;
+let {(s,d) in LINKS} variance[s,d] := p*(1-p);
 
 
-let K := (max{(s,d) in LINKS} capacity_P[s,d])+1;
+#option solver cplex;
+#option cplex_options 'mipgap=0.01 mipdisplay=3';
 
-option cplex_options 'mipgap=0.01 mipdisplay=3';
+option solver gurobi;
 
 solve;
 display CB;
+display sum{(i,j) in LINKS}CB[i,j];
+display (sum{(i,j) in LINKS}CB[i,j])/n;
+display 1/sqrt(n);
+display 1/sqrt(n*log(n));
 #display B;
 
 option log_file '';

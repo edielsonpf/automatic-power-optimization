@@ -19,7 +19,7 @@
         
     //10, 15, 20
     // max and min distances in km
-    MAX_DISTANCE = 5;
+    MAX_DISTANCE = 20;
     MIN_DISTANCE = 1;
     AREA=MAX_DISTANCE^2;
     
@@ -28,7 +28,7 @@
     //STD_DISTANCE=AVERAGE_DISTANCE*0.3;
     
     //10%, 30%, 60%, 80%
-    NODES_DENSITY=0.8;   
+    NODES_DENSITY=0.1;   
     //40,120,240,320
     NUM_NODES = round(AREA*NODES_DENSITY);
         
@@ -108,7 +108,7 @@
        //disp(-1.*maxGraph);
        //=========================================
        
-       nodePower = optimizeNoSteps(nodePower,min_nodeLevel,MIN_SENSIBILITY,MIN_POWER);
+       nodePower = optimizeNoSteps(nodePower,nodeLevel,min_nodeLevel,MIN_SENSIBILITY,MIN_POWER);
        //nodePower = optimize(nodePower,min_nodeLevel,MIN_SENSIBILITY,MIN_POWER);
                
        //Calculating the network average power
