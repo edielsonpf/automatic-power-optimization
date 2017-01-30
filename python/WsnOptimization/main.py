@@ -54,10 +54,10 @@ print('Reduction [Phase I]: ' + str((1-(Total_I/total))*100)+'%\n')
 
 #print (str(Graph))
 print('Finding the minimum spanning tree...\n')
-Network.optimizeTopology()
+powerVector = Network.optimizeTopology()
 
 print('Optimizing the new graph after MST...\n')
-powerVector = Network.optimizePower()
+# powerVector = Network.optimizePower()
 Total_II = sum(powerVector)
 print('Total power [Phase II]: '+ str(Total_II))
 print('Reduction [Phase II]: ' + str((1-(Total_II/total))*100)+'%\n')

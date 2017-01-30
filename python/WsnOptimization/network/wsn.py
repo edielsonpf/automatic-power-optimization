@@ -79,7 +79,10 @@ class WSN(object):
     def __generateGraph(self):
         
         # transforms the indirect graph in directed one
-        self.__nxGraph = nx.Graph()
+        if self.__nxGraph:
+            self.__nxGraph.clear()
+        else:
+            self.__nxGraph = nx.Graph()
         
         # generated a graph with connection between nodes initially unconnected
         self.__graph = [[self.__unconnected for i in range(self.__numNodes)] for j in range(self.__numNodes)]
@@ -99,6 +102,7 @@ class WSN(object):
             logging.warning('The graph is not connected!')
             self.__graph = []
             self.__nxGraph=[]
+            
     def getScenario(self):
         return self.__nodes
     
@@ -106,6 +110,7 @@ class WSN(object):
         return self.__graph
     
     def optimizePower(self):
+        
         #optimize each row, finding the farthest node
         for i in range(len(self.__graph)):
             highDistance = 0
@@ -123,13 +128,9 @@ class WSN(object):
     def optimizeTopology(self):
         self.__graph = self.__mst.prim(self.__graph)
         self.__mst.printMST()
-        
-        self.__nxGraph.clear()
-        
-        for i in range(len(self.__graph)):
-            for j in range(len(self.__graph)):
-                if self.__graph[i][j] < self.__unconnected:
-                    self.__nxGraph.add_edge(i, j)
+        self.optimizePower()
+        self.__generateGraph()
+        return self.__power            
                                 
     def getLinks(self):
         
