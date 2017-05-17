@@ -8,6 +8,8 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np 
 from algorithms.mst import MST
+from optimizer import power
+from optimizer.power import PowerOptimizer
 
 class WSN(object):
     '''
@@ -20,7 +22,7 @@ class WSN(object):
     __power = []
     __graph = []
     __nxGraph = []
-       
+           
     def __init__(self,power,num_nodes,nodes,frequency,threshold,min_tx_level,log):
         '''
         Constructor
@@ -34,6 +36,8 @@ class WSN(object):
         self.__nodes = nodes    
         self.__mst = MST(log)
         self.__generateGraph()
+        
+        self.PowerOptimizer = PowerOptimizer()
         
     def __configLog(self,log):
         # print a log message to the console.
@@ -69,7 +73,7 @@ class WSN(object):
                     if dist < self.__caldDistance(self.__power[i]):
                         ValidConnection = True
                         self.__graph[i][j] = dist
-                        self.__nxGraph.add_edge(i, j) 
+                        self.__nxGraph.add_edge(i, j, weight = dist) 
         
         if ValidConnection == False:
             logging.warning('The graph is not connected!')
@@ -95,7 +99,7 @@ class WSN(object):
                     if round(dist,2) <= round(self.__caldDistance(self.__power[self.__nodes.index(node_a)]),2):
                         ValidConnection = True
                         self.__graph[self.__nodes.index(node_a)][self.__nodes.index(node_b)] = dist
-                        self.__nxGraph.add_edge(self.__nodes.index(node_a), self.__nodes.index(node_b)) 
+                        self.__nxGraph.add_edge(self.__nodes.index(node_a), self.__nodes.index(node_b), weight = dist) 
         
             if ValidConnection == False:
                 logging.warning('The graph is not connected!\r\n')
@@ -128,6 +132,19 @@ class WSN(object):
             
         return self.__power
     
+    def optimizeTopology2(self):
+        if(self.__graph):
+            self.__graph = self.__mst.prim(self.__graph)
+            print(self.__graph)
+            self.PowerOptimizer.LoadModel(self.__minTxLevel, self.__threshold, self.__power, self.getLinksCost(),self.getLinks(),self.getNodes(),self.__calcLoss)
+            self.__power = self.PowerOptimizer.optimize()
+            self.__generateGraph()
+        else:
+            logging.warning('The graph is not valid!\r\n')
+            self.__power = []    
+       
+        return self.__power
+    
     def optimizeTopology(self):
         if(self.__graph):
             self.__graph = self.__mst.prim(self.__graph)
@@ -148,7 +165,16 @@ class WSN(object):
                     links.append((i,j))
         return links
 
+    def getNodes(self):
+        
+        return self.__nxGraph.nodes()
     
+    def getLinksCost(self):
+        link_cost = {}
+        for i,j in self.getLinks():
+            link_cost[i,j]=self.__graph[i][j]
+        return link_cost
+   
     def plotGraph(self,positions=None):
         """Plot a graph G with specific positions.
     

@@ -47,6 +47,7 @@ powerVector = Network.optimizePower()
 Total_I = sum(powerVector)
 print('Total power [Phase I]: ' + str(Total_I))
 print('Reduction [Phase I]: ' + str((1-(Total_I/total))*100)+'%\n')
+
 #====================================================================
 #Graph = [[unconnected, 2, unconnected, 6, unconnected], [2, unconnected, 3, 8, 5], [unconnected, 3, unconnected, unconnected, 7],[6, 8, unconnected, unconnected, 9], [unconnected, 5, 7, 9, unconnected]]
 #Graph = [[100000, 1.6886794115948998, 2.3122223520756173, 5.296711537472404, 3.5272263704139903], [1.6886794115948998, 100000, 2.91118563715952, 4.489562628012171, 3.2441779819626384], [2.3122223520756173, 2.91118563715952, 100000, 3.789229517634896, 100000], [5.296711537472404, 4.489562628012171, 3.789229517634896, 100000, 100000], [3.5272263704139903, 3.2441779819626384, 100000, 100000, 100000]]
@@ -57,9 +58,15 @@ print('Finding the minimum spanning tree...\n')
 powerVector = Network.optimizeTopology()
 
 print('Optimizing the new graph after MST...\n')
-# powerVector = Network.optimizePower()
 Total_II = sum(powerVector)
 print('Total power [Phase II]: '+ str(Total_II))
 print('Reduction [Phase II]: ' + str((1-(Total_II/total))*100)+'%\n')
 
 Network.plotGraph(positions=None)
+
+print('Optimizing the new graph after MST with MIP model...\n')
+powerVectorIII = Network.optimizeTopology2()
+print(powerVectorIII)
+Total_III = sum(powerVectorIII)
+print('Total power [Phase III]: '+ str(Total_III))
+print('Reduction [Phase III]: ' + str((1-(Total_III/total))*100)+'%\n')
