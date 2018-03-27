@@ -1,7 +1,6 @@
 # automatic-power-optimization
 Automatic power optmization for wireless sensor networks
 
-Use ACP.sci file to modify the simulation parameters such as nodes density, area, radio power, etc.
-Just call APC.sci in Scilab to run the simulation.
+For more information, see
 
-For more information, visit https://github.com/edielsonpf/automatic-power-optimization
+"Controle da Topologia de Redes de Sensores sem Fio para Economia de Energia Baseado no Algoritmo de Prim", Revista da Tecnologia da Informação e Comunicação, v. 6, n. 1, pp. 9-14, 2016 (http://dx.doi.org/10.12721/2237-5112/rtic.v6n1p9-14). 
