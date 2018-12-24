@@ -5,7 +5,20 @@ For more information, see
 
 "Controle da Topologia de Redes de Sensores sem Fio para Economia de Energia Baseado no Algoritmo de Prim", Revista da Tecnologia da Informação e Comunicação, v. 6, n. 1, pp. 9-14, 2016.
 
-https://www.researchgate.net/publication/302596670_Controle_da_Topologia_de_Redes_de_Sensores_sem_Fio_para_Economia_de_Energia_Baseado_no_Algoritmo_de_Prim 
+If you use the code, please cite the following [paper](http://rtic.com.br/index.php/rtic/article/view/70):
+
+```
+@article{rtic,
+	author = {Jonathan de C. Silva e Evandro L. B. Gomes e Edielson P. Frigieri},
+	title = { Controle da Topologia de Redes de Sensores sem Fio para Economia de Energia Baseado no Algoritmo de Prim},
+	journal = {Revista de Tecnologia da Informação e Comunicação},
+	volume = {6},
+	number = {1},
+	year = {2016},
+	keywords = {},
+	pages = {9--14},	url = {http://rtic.com.br/index.php/rtic/article/view/70}
+}
+```
 
 # Quick start
 
