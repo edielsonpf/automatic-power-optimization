@@ -86,36 +86,46 @@ Network.plotGraph(positions=None)
 
 This final step compares three optimization methods: 
 
-(1) in the method 1, the power of each node is reduced to the possible minimum, just considering its fartest neighbor.
-(2) in the method 2, a minimun spanning tree is found an the power of each node is reduced to the possbile minimun, just consireing its fartest neighbor.
-(3) in the method 3, a minimun spanning tree is found an a MIP is solved based on the resulted graph.
+(1) In the method 1, the power of each node is reduced to the possible minimum, just considering its fartest neighbor.
 
 ```python
 
-print('Method 1: optimizing power direct...\n')
+print('Method I: optimizing power direct...\n')
 powerVector = Network.optimizePower()
 Total_I = sum(powerVector)
 
-print('Total power [Phase I]: ' + str(Total_I))
-print('Reduction [Phase I]: ' + str((1-(Total_I/total))*100)+'%\n')
+print('Total power [Method I]: ' + str(Total_I))
+print('Reduction [Method I]: ' + str((1-(Total_I/total))*100)+'%\n')
 
-print('Finding the minimum spanning tree...\n')
+```
+
+
+(2) In the method 2, a minimun spanning tree is found an the power of each node is reduced to the possbile minimun, just consireing its fartest neighbor.
+
+```python
+
+print('Method II: finding the minimum spanning tree...\n')
 powerVector = Network.optimizeTopology()
 
 print('Optimizing the new graph after MST...\n')
 Total_II = sum(powerVector)
 
-print('Total power [Phase II]: '+ str(Total_II))
-print('Reduction [Phase II]: ' + str((1-(Total_II/total))*100)+'%\n')
+print('Total power [Method II]: '+ str(Total_II))
+print('Reduction [Method II]: ' + str((1-(Total_II/total))*100)+'%\n')
 Network.plotGraph(positions=None)
 
-print('Optimizing the new graph after MST with MIP model...\n')
+```
+(3) In the method 3, a minimun spanning tree is found an a MIP is solved based on the resulted graph.
+
+```python
+
+print('Method III: optimizing the new graph after MST with MIP model...\n')
 powerVectorIII = Network.optimizeTopology2()
 print(powerVectorIII)
 Total_III = sum(powerVectorIII)
 
-print('Total power [Phase III]: '+ str(Total_III))
-print('Reduction [Phase III]: ' + str((1-(Total_III/total))*100)+'%\n')
+print('Total power [Method III]: '+ str(Total_III))
+print('Reduction [Method III]: ' + str((1-(Total_III/total))*100)+'%\n')
 ```
 
 
