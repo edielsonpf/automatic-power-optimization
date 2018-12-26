@@ -1,5 +1,10 @@
 # Automatic Power Optimization
+
 Automatic power optmization for wireless sensor networks
+
+# Overview
+
+This is an implementation of an optimization approach based on Prim's algorithm to calculate the minium transmission power for each node part of an Wireless Sensor Network, keeping a valid path between all nodes and the sink node. 
 
 For more information, see
 
@@ -20,9 +25,6 @@ If you use the code, please cite the following [paper](http://rtic.com.br/index.
 	url = {http://rtic.com.br/index.php/rtic/article/view/70}
 }
 ```
-# Overview
-
-This is an implementation of an optimization approach based on Prim's algorithm to calculate the minium transmission power for each node part of an Wireless Sensor Network, keeping a valid path between all nodes and the sink node. 
 
 # Quick start
 
