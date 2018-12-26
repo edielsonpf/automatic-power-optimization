@@ -126,6 +126,7 @@ Total_III = sum(powerVectorIII)
 
 print('Total power [Method III]: '+ str(Total_III))
 print('Reduction [Method III]: ' + str((1-(Total_III/total))*100)+'%\n')
+Network.plotGraph(positions=None)
 ```
 
 
