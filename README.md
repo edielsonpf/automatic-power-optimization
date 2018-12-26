@@ -53,7 +53,7 @@ frequency = 933
 area = 50  #square kilometers
 ```
 
-## Step 3: Create random WSN scenario
+## Step 3: Create random position for the nodes
 
 ```python
 
@@ -63,7 +63,7 @@ nodes=[[random.uniform(0, math.sqrt(area)), random.uniform(0, math.sqrt(area))] 
 
 ```
 
-## Step 4: Initial transmition power definition 
+## Step 4: Define the initial transmition power to maximun for each node 
 
 ```python
 # Defining a transmission power vector with maximum power level for all nodes
@@ -73,7 +73,7 @@ total = sum(powerVector)
 print('Initial total power: ' + str(total)+'\n')
 ````
 
-## Step 5: Calculate the minimum power: method 1
+## Step 5: Create the intial WSN based on the the defined parameters and positions
 
 ```python
 # Creating network object  
@@ -81,17 +81,24 @@ print('Initial total power: ' + str(total)+'\n')
 Network = WSN(powerVector,numNodes,nodes,frequency,threshold,minPower,logLevel)
 Network.plotGraph(positions=None)
 
-print('Optimizing power direct...\n')
+```
+## Step 6: Optimze the WSN 
+
+This final step compares three optimization methods: 
+
+(1) in the method 1, the power of each node is reduced to the possible minimum, just considering its fartest neighbor.
+(2) in the method 2, a minimun spanning tree is found an the power of each node is reduced to the possbile minimun, just consireing its fartest neighbor.
+(3) in the method 3, a minimun spanning tree is found an a MIP is solved based on the resulted graph.
+
+```python
+
+print('Method 1: optimizing power direct...\n')
 powerVector = Network.optimizePower()
 Total_I = sum(powerVector)
 
 print('Total power [Phase I]: ' + str(Total_I))
 print('Reduction [Phase I]: ' + str((1-(Total_I/total))*100)+'%\n')
 
-```
-## Step 6: Calculate the minimum power: method 2 
-
-```python
 print('Finding the minimum spanning tree...\n')
 powerVector = Network.optimizeTopology()
 
