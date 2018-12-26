@@ -1,4 +1,4 @@
-# automatic-power-optimization
+# Automatic Power Optimization
 Automatic power optmization for wireless sensor networks
 
 For more information, see
